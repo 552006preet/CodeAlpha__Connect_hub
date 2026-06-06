@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ConnectHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-container">
+        <h2>Create Account</h2>
+        <p class="subtitle">It's quick and easy.</p>
+        <div class="error-msg" id="error-msg"></div>
+        <div class="success-msg" id="success-msg"></div>
+        <input type="text" id="name" placeholder="Full name">
+        <input type="text" id="email" placeholder="Email address">
+        <input type="password" id="password" placeholder="Password (min 6 chars)">
+        <input type="text" id="bio" placeholder="Short bio (optional)">
+        <button class="main-btn" onclick="registerUser()">Sign Up</button>
+        <div class="switch-link" style="margin-top:14px;">Already have an account? <a href="login.html">Log in</a></div>
+    </div>
+</div>
+<script src="app.js"></script>
+<script>
+function registerUser() {
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var bio = document.getElementById("bio").value.trim();
+    var err = document.getElementById("error-msg");
+    var suc = document.getElementById("success-msg");
+    err.className = "error-msg"; suc.className = "success-msg";
+    if (!name || !email || !password) { err.textContent = "Name, email and password are required."; err.className = "error-msg show"; return; }
+    if (password.length < 6) { err.textContent = "Password must be at least 6 characters."; err.className = "error-msg show"; return; }
+    var users = JSON.parse(localStorage.getItem("sm_users")) || [];
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].email === email) { err.textContent = "Email already registered."; err.className = "error-msg show"; return; }
+    }
+    users.push({ id: Date.now(), name: name, email: email, password: password, bio: bio || "Hey, I am using ConnectHub!", followers: [], following: [] });
+    localStorage.setItem("sm_users", JSON.stringify(users));
+    suc.textContent = "Account created! Redirecting..."; suc.className = "success-msg show";
+    setTimeout(function() { window.location.href = "login.html"; }, 1200);
+}
+</script>
+</body>
+</html>

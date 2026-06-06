@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">ConnectHub</div>
+    <div class="nav-links">
+        <a href="index.html">🏠 Home</a>
+        <a href="profile.html" id="profile-nav" style="display:none;">👤 Profile</a>
+        <a href="login.html" id="login-nav">Login</a>
+        <a href="#" id="logout-nav" style="display:none;" onclick="logoutUser()">Logout</a>
+    </div>
+</nav>
+
+<div class="main-layout">
+
+    <!-- CREATE POST BOX — only visible when logged in -->
+    <div class="create-post" id="create-post-box" style="display:none;">
+        <div class="create-post-top">
+            <div class="avatar" id="user-avatar">?</div>
+            <textarea id="post-text" placeholder="What's on your mind?"></textarea>
+        </div>
+
+        <!-- media previews appear here -->
+        <div class="media-preview-area" id="media-preview-area">
+            <div class="media-preview-grid" id="media-preview-grid"></div>
+        </div>
+
+        <!-- hidden file inputs -->
+        <input type="file" id="photo-input" accept="image/*" multiple
+               onchange="handlePhotoSelect(this)">
+        <input type="file" id="video-input" accept="video/*"
+               onchange="handleVideoSelect(this)">
+
+        <div class="post-actions-row">
+            <div class="media-btns">
+                <button class="media-btn photo" onclick="triggerPhotoUpload()">
+                    🖼️ Photo
+                </button>
+                <button class="media-btn video" onclick="triggerVideoUpload()">
+                    🎬 Video
+                </button>
+            </div>
+            <button class="post-submit-btn" id="post-btn" onclick="createPost()">Post</button>
+        </div>
+    </div>
+
+    <!-- FEED -->
+    <div class="feed" id="posts-feed"></div>
+
+</div>
+
+<!-- LIGHTBOX for full image view -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="full image">
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+<script>
+    // set the user's initial in the create post avatar
+    window.addEventListener("load", function() {
+        var user = getCurrentUser();
+        var av = document.getElementById("user-avatar");
+        if (user && av) av.textContent = getInitial(user.name);
+    });
+</script>
+</body>
+</html>

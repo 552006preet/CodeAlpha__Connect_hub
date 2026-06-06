@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ConnectHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-container">
+        <h2>ConnectHub</h2>
+        <p class="subtitle">Connect with friends and the world around you.</p>
+        <div class="error-msg" id="error-msg"></div>
+        <input type="text" id="email" placeholder="Email address">
+        <input type="password" id="password" placeholder="Password">
+        <button class="main-btn" onclick="loginUser()">Log In</button>
+        <hr style="margin:20px 0;border:none;border-top:1px solid #eee;">
+        <div class="switch-link">Don't have an account? <a href="register.html">Create Account</a></div>
+    </div>
+</div>
+<script src="app.js"></script>
+<script>
+function loginUser() {
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var err = document.getElementById("error-msg");
+    err.className = "error-msg";
+    if (!email || !password) { err.textContent = "Please fill all fields."; err.className = "error-msg show"; return; }
+    var users = JSON.parse(localStorage.getItem("sm_users")) || [];
+    var found = null;
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].email === email && users[i].password === password) { found = users[i]; break; }
+    }
+    if (!found) { err.textContent = "Wrong email or password."; err.className = "error-msg show"; return; }
+    localStorage.setItem("sm_user", JSON.stringify(found));
+    window.location.href = "index.html";
+}
+</script>
+</body>
+</html>
